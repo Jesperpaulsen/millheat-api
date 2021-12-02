@@ -1,0 +1,11 @@
+{
+  "watch": [
+    "src"
+  ],
+  "ignore": [
+    "src/routes/__test__"
+  ],
+  "ext": "ts,mjs,js,json,graphql",
+  "exec": "etsc -r dotenv/config && node -r dotenv/config ./lib/index.js",
+  "legacyWatch": true
+}
