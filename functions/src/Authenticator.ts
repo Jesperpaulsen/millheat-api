@@ -11,6 +11,7 @@ export class Authenticator {
   authenticate = async (): Promise<void> => {
     const authorizationCode = await this.getAuthorizationCode();
     const accessToken = await this.getAccessToken(authorizationCode);
+    console.log(accessToken);
     this.accessToken = accessToken;
   };
 
@@ -20,21 +21,21 @@ export class Authenticator {
       secret_token: this.mill.secrets.secretToken,
     };
 
-    const res = await this.mill.api.doRequest<{ AuthorizationCode: string }>(
-      "post",
+    const res = await this.mill.api.doRequest<{ authorization_code: string }>(
+      "get",
       "share/applyAuthCode",
       { headers }
     );
-    return res.AuthorizationCode;
+    return res?.authorization_code;
   };
 
   private getAccessToken = async (authorizationCode: string) => {
-    const res = await this.mill.api.doRequest<{ AccessToken: string }>(
-      "post",
+    const res = await this.mill.api.doRequest<{ access_token: string }>(
+      "get",
       `share/applyAccessToken?password=${this.mill.secrets.password}&username=${this.mill.secrets.username}`,
       { headers: { authorization_code: authorizationCode } }
     );
 
-    return res.AccessToken;
+    return res?.access_token;
   };
 }

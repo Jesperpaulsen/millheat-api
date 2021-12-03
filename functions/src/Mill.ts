@@ -23,6 +23,7 @@ export class Mill {
   }
 
   readonly setTemp = async (roomName: string, temperature: number) => {
+    console.log(temperature);
     await this.authenticator.authenticate();
     await this.roomHandler.getRoom(roomName);
     await this.deviceHandler.getDevices();

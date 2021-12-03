@@ -24,17 +24,17 @@ export class DeviceHandler {
     status: number
   ) => {
     const promises = [];
-
     for (const device of this.devices) {
       promises.push(
         this.mill.api.doRequest(
-          "post",
-          `uds/deviceControlForOpenApi?deviceId=${device?.deviceId}&holdTemp={${temperature}&operation=${operation}&status=${status}`,
+          "get",
+          `uds/deviceControlForOpenApi?deviceId=${device?.deviceId}&holdTemp=${temperature}&operation=${operation}&status=${status}`,
           { auth: true }
         )
       );
     }
 
     await Promise.all(promises);
+    console.log(promises);
   };
 }

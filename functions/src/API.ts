@@ -26,8 +26,11 @@ export class API {
     if (auth) {
       tmpHeaders["access_token"] = this.mill.authenticator.accessToken || "";
     }
+    if (url.startsWith("/")) {
+      throw new Error(`Don't pass in / at the beginning of the URL: ${url}`);
+    }
     // @ts-ignore
-    const res = await axios[method](`${this.baseUrl}/${url}`, {
+    const res = await axios[method](`${this.baseUrl}${url}`, {
       headers: tmpHeaders,
       data,
     });

@@ -1,3 +1,5 @@
+import * as functions from "firebase-functions";
+
 export class Secrets {
   readonly accessKey: string;
   readonly secretToken: string;
@@ -5,14 +7,17 @@ export class Secrets {
   readonly password: string;
 
   constructor() {
-    this.accessKey = this.getKeyFromEnvironment("accessKey");
-    this.secretToken = this.getKeyFromEnvironment("secretToken");
+    this.accessKey = this.getKeyFromEnvironment("access_key");
+    this.secretToken = this.getKeyFromEnvironment("secret_token");
     this.username = this.getKeyFromEnvironment("username");
     this.password = this.getKeyFromEnvironment("password");
   }
 
   private getKeyFromEnvironment = (key: string) => {
-    const loadedKey = process.env[key];
+    let loadedKey = process.env[key];
+    if (!loadedKey) {
+      loadedKey = functions.config().mill[key];
+    }
     if (!loadedKey) {
       throw new Error(`No key loaded from environment for ${key}`);
     }

@@ -12,9 +12,11 @@ export class RoomHandler {
   readonly getRoom = async (roomName: Room["roomName"]) => {
     const res = await this.mill.api.doRequest<{ roomList: Room[] }>(
       "get",
-      `uds/selectRoomByHome?homeId=${this.mill.homeHandler.homeId}`,
+      `uds/selectRoombyHome?homeId=${this.mill.homeHandler.homeId}`,
       { auth: true }
     );
-    this.room = res.roomList.find((room) => room.roomName === roomName);
+    this.room =
+      res.roomList.find((room) => room.roomName === roomName) ||
+      res.roomList[0];
   };
 }
